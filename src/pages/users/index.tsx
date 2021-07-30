@@ -11,7 +11,8 @@ import {
     Text, 
     Th, 
     Thead, 
-    Tr 
+    Tr, 
+    useBreakpointValue
 } from "@chakra-ui/react";
 import { RiAddLine, RiPencilLine } from "react-icons/ri";
 import { Sidebar } from "../../components/Sidebar";
@@ -19,6 +20,12 @@ import { Header } from "../../components/Header";
 import { Pagination } from "../../components/Pagination";
 
 export default function USerList(){
+    const isWideVersion = useBreakpointValue({
+        base: false,
+        md: true
+    })
+
+
     return (
         <Box>
             <Header />
@@ -55,19 +62,19 @@ export default function USerList(){
                 <Table colorScheme="whiteAlpha">
                     <Thead>
                         <Tr>
-                            <Th px="6" color="gray.300" width="8">
+                            <Th px={["4","4", "6"]} color="gray.300" width="8">
                                 <Checkbox colorScheme="pink" />
                             </Th>
 
                             <Th>Usuário</Th>
-                            <Th>Data de cadastro</Th>
+                            { isWideVersion && <Th>Data de cadastro</Th>}
                             <Th width="8"></Th>
                         </Tr>
                     </Thead>
 
                     <Tbody>
                         <Tr>
-                            <Td px="6">
+                            <Td px={["4","4", "6"]}>
                                 <Checkbox colorScheme="pink" />
                             </Td>
                             <Td>
@@ -76,11 +83,12 @@ export default function USerList(){
                                    <Text fontSize="sm" color="gray.300">eltoncampos36@gmail.com</Text>
                                </Box>
                             </Td>
+                            { isWideVersion && 
                             <Td>
                                 29 de novembro de 2021
-                            </Td>
+                            </Td>}
 
-                            <Td>
+                                {isWideVersion ?                             <Td>
                             <Button
                                 as="a"
                                 size="sm"
@@ -91,9 +99,12 @@ export default function USerList(){
                                 Editar
                              </Button>
                             </Td>
+                            :
+                                    ''
+                            }
                         </Tr>
                         <Tr>
-                            <Td px="6">
+                            <Td px={["4","4", "6"]}>
                                 <Checkbox colorScheme="pink" />
                             </Td>
                             <Td>
@@ -102,11 +113,13 @@ export default function USerList(){
                                    <Text fontSize="sm" color="gray.300">eltoncampos36@gmail.com</Text>
                                </Box>
                             </Td>
-                            <Td>
-                                29 de novembro de 2021
-                            </Td>
+                            { isWideVersion && 
+                                <Td>
+                                    29 de novembro de 2021
+                                </Td>
+                            }
 
-                            <Td>
+                            {isWideVersion ?                             <Td>
                             <Button
                                 as="a"
                                 size="sm"
@@ -117,9 +130,12 @@ export default function USerList(){
                                 Editar
                              </Button>
                             </Td>
+                            :
+                                ''
+                            }
                         </Tr>
                         <Tr>
-                            <Td px="6">
+                            <Td px={["4","4", "6"]}>
                                 <Checkbox colorScheme="pink" />
                             </Td>
                             <Td>
@@ -128,11 +144,14 @@ export default function USerList(){
                                    <Text fontSize="sm" color="gray.300">eltoncampos36@gmail.com</Text>
                                </Box>
                             </Td>
-                            <Td>
-                                29 de novembro de 2021
-                            </Td>
 
-                            <Td>
+                           {isWideVersion &&  
+                                <Td>
+                                    29 de novembro de 2021
+                                </Td>
+                            }
+
+                            {isWideVersion ?                             <Td>
                             <Button
                                 as="a"
                                 size="sm"
@@ -143,6 +162,9 @@ export default function USerList(){
                                 Editar
                              </Button>
                             </Td>
+                            :
+                                ''
+                            }
                         </Tr>
                     </Tbody>
                 </Table>
