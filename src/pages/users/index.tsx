@@ -16,6 +16,7 @@ import {
 import { RiAddLine, RiPencilLine } from "react-icons/ri";
 import { Sidebar } from "../../components/Form/Sidebar";
 import { Header } from "../../components/Header";
+import { Pagination } from "../../components/Pagination";
 
 export default function USerList(){
     return (
@@ -145,6 +146,8 @@ export default function USerList(){
                         </Tr>
                     </Tbody>
                 </Table>
+
+                  <Pagination />  
                 </Box>
             </Flex>
         </Box>
