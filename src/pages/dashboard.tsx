@@ -3,7 +3,7 @@ import { ApexOptions } from 'apexcharts';
 import dynamic from 'next/dynamic'
 
 import { Header } from '../components/Header'
-import { Sidebar } from '../components/Form/Sidebar'
+import { Sidebar } from '../components/Sidebar'
 import { theme } from '../styles/theme'
 
 const Chart = dynamic(() => import('react-apexcharts'), {
