@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useQuery } from 'react-query'
 import { 
     Box, 
     Button, 
@@ -5,6 +7,7 @@ import {
     Flex, 
     Heading, 
     Icon, 
+    Spinner, 
     Table, 
     Tbody, 
     Td, 
@@ -14,27 +17,28 @@ import {
     Tr, 
     useBreakpointValue
 } from "@chakra-ui/react";
-import { RiAddLine, RiPencilLine } from "react-icons/ri";
 import Link from 'next/link';
 
+import { RiAddLine, RiPencilLine } from "react-icons/ri";
 
 import { Sidebar } from "../../components/Sidebar";
 import { Header } from "../../components/Header";
 import { Pagination } from "../../components/Pagination";
-import { useEffect } from "react";
 
 export default function USerList(){
+    const {data, isLoading, error } = useQuery('users', async () => {
+        const response = await fetch('http://localhost:3000/api/users')
+         const data = await response.json();
+         
+        return data;
+    })
+
+
+
     const isWideVersion = useBreakpointValue({
         base: false,
         md: true
     })
-
-    useEffect(() => {
-        fetch('http://localhost:3000/api/users')
-            .then(response => response.json())
-            .then(data => console.log(data))
-    },[])
-
 
     return (
         <Box>
@@ -71,117 +75,130 @@ export default function USerList(){
 
                 </Flex>
 
-                <Table colorScheme="whiteAlpha">
-                    <Thead>
-                        <Tr>
-                            <Th px={["4","4", "6"]} color="gray.300" width="8">
-                                <Checkbox colorScheme="pink" />
-                            </Th>
+               {isLoading ? (
+                <Flex justify="center">
+                    <Spinner />
+                </Flex>
+               ) : error ? (
+                   <Flex justify="center">
+                       <Text>Falha ao obter dados dos usuário.</Text>
+                   </Flex>
+               ) : (
+                   <>
+                        <Table colorScheme="whiteAlpha">
+                        <Thead>
+                            <Tr>
+                                <Th px={["4","4", "6"]} color="gray.300" width="8">
+                                    <Checkbox colorScheme="pink" />
+                                </Th>
 
-                            <Th>Usuário</Th>
-                            { isWideVersion && <Th>Data de cadastro</Th>}
-                            <Th width="8"></Th>
-                        </Tr>
-                    </Thead>
+                                <Th>Usuário</Th>
+                                { isWideVersion && <Th>Data de cadastro</Th>}
+                                <Th width="8"></Th>
+                            </Tr>
+                        </Thead>
 
-                    <Tbody>
-                        <Tr>
-                            <Td px={["4","4", "6"]}>
-                                <Checkbox colorScheme="pink" />
-                            </Td>
-                            <Td>
-                               <Box>
-                                   <Text fontWeight="bold">Elton Campos</Text>
-                                   <Text fontSize="sm" color="gray.300">eltoncampos36@gmail.com</Text>
-                               </Box>
-                            </Td>
-                            { isWideVersion && 
-                            <Td>
-                                29 de novembro de 2021
-                            </Td>}
+                        <Tbody>
+                            <Tr>
+                                <Td px={["4","4", "6"]}>
+                                    <Checkbox colorScheme="pink" />
+                                </Td>
+                                <Td>
+                                <Box>
+                                    <Text fontWeight="bold">Elton Campos</Text>
+                                    <Text fontSize="sm" color="gray.300">eltoncampos36@gmail.com</Text>
+                                </Box>
+                                </Td>
+                                { isWideVersion && 
+                                <Td>
+                                    29 de novembro de 2021
+                                </Td>}
+
+                                    {isWideVersion ?                             <Td>
+                                <Button
+                                    as="a"
+                                    size="sm"
+                                    fontSize="sm"
+                                    colorScheme="purple"
+                                    leftIcon={<Icon as={RiPencilLine} fontSize="16"/>}
+                                >
+                                    Editar
+                                </Button>
+                                </Td>
+                                :
+                                        ''
+                                }
+                            </Tr>
+                            <Tr>
+                                <Td px={["4","4", "6"]}>
+                                    <Checkbox colorScheme="pink" />
+                                </Td>
+                                <Td>
+                                <Box>
+                                    <Text fontWeight="bold">Elton Campos</Text>
+                                    <Text fontSize="sm" color="gray.300">eltoncampos36@gmail.com</Text>
+                                </Box>
+                                </Td>
+                                { isWideVersion && 
+                                    <Td>
+                                        29 de novembro de 2021
+                                    </Td>
+                                }
 
                                 {isWideVersion ?                             <Td>
-                            <Button
-                                as="a"
-                                size="sm"
-                                fontSize="sm"
-                                colorScheme="purple"
-                                leftIcon={<Icon as={RiPencilLine} fontSize="16"/>}
-                            >
-                                Editar
-                             </Button>
-                            </Td>
-                            :
+                                <Button
+                                    as="a"
+                                    size="sm"
+                                    fontSize="sm"
+                                    colorScheme="purple"
+                                    leftIcon={<Icon as={RiPencilLine} fontSize="16"/>}
+                                >
+                                    Editar
+                                </Button>
+                                </Td>
+                                :
                                     ''
-                            }
-                        </Tr>
-                        <Tr>
-                            <Td px={["4","4", "6"]}>
-                                <Checkbox colorScheme="pink" />
-                            </Td>
-                            <Td>
-                               <Box>
-                                   <Text fontWeight="bold">Elton Campos</Text>
-                                   <Text fontSize="sm" color="gray.300">eltoncampos36@gmail.com</Text>
-                               </Box>
-                            </Td>
-                            { isWideVersion && 
-                                <Td>
-                                    29 de novembro de 2021
+                                }
+                            </Tr>
+                            <Tr>
+                                <Td px={["4","4", "6"]}>
+                                    <Checkbox colorScheme="pink" />
                                 </Td>
-                            }
-
-                            {isWideVersion ?                             <Td>
-                            <Button
-                                as="a"
-                                size="sm"
-                                fontSize="sm"
-                                colorScheme="purple"
-                                leftIcon={<Icon as={RiPencilLine} fontSize="16"/>}
-                            >
-                                Editar
-                             </Button>
-                            </Td>
-                            :
-                                ''
-                            }
-                        </Tr>
-                        <Tr>
-                            <Td px={["4","4", "6"]}>
-                                <Checkbox colorScheme="pink" />
-                            </Td>
-                            <Td>
-                               <Box>
-                                   <Text fontWeight="bold">Elton Campos</Text>
-                                   <Text fontSize="sm" color="gray.300">eltoncampos36@gmail.com</Text>
-                               </Box>
-                            </Td>
-
-                           {isWideVersion &&  
                                 <Td>
-                                    29 de novembro de 2021
+                                <Box>
+                                    <Text fontWeight="bold">Elton Campos</Text>
+                                    <Text fontSize="sm" color="gray.300">eltoncampos36@gmail.com</Text>
+                                </Box>
                                 </Td>
-                            }
 
-                            {isWideVersion ?                             <Td>
-                            <Button
-                                as="a"
-                                size="sm"
-                                fontSize="sm"
-                                colorScheme="purple"
-                                leftIcon={<Icon as={RiPencilLine} fontSize="16"/>}
-                            >
-                                Editar
-                             </Button>
-                            </Td>
-                            :
-                                ''
-                            }
-                        </Tr>
-                    </Tbody>
-                </Table>
+                            {isWideVersion &&  
+                                    <Td>
+                                        29 de novembro de 2021
+                                    </Td>
+                                }
 
-                  <Pagination />  
+                                {isWideVersion ?                             <Td>
+                                <Button
+                                    as="a"
+                                    size="sm"
+                                    fontSize="sm"
+                                    colorScheme="purple"
+                                    leftIcon={<Icon as={RiPencilLine} fontSize="16"/>}
+                                >
+                                    Editar
+                                </Button>
+                                </Td>
+                                :
+                                    ''
+                                }
+                            </Tr>
+                        </Tbody>
+                    </Table>
+
+                    <Pagination />  
+                </>
+               )    
+            }
                 </Box>
             </Flex>
         </Box>
