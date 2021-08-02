@@ -43,6 +43,8 @@ export default function USerList(){
             }
         })
         return users;
+    }, {
+        staleTime: 1000 * 5, //5s
     })
 
 
