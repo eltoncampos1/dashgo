@@ -1,7 +1,41 @@
-import { Box, Button, Stack } from "@chakra-ui/react";
+import { Box, Stack, Text } from "@chakra-ui/react";
 import { PaginationItem } from "./PaginationItem";
 
-export function Pagination() {
+interface PaginationProps {
+    totalCountOfRegisters: number;
+    registerPerPage?:number;
+    currentPage?:number;
+    onPageChange: (page: number ) => void;
+}
+
+const sibilingsCount = 1;
+
+
+function generatePagesArray(from: number, to: number) {
+    return [...new Array(to - from)]
+        .map((_, idx) =>  {
+            return from + idx + 1;
+        })
+        .filter(page => page > 0)
+}
+
+export function Pagination( { 
+    totalCountOfRegisters,
+    registerPerPage = 10,
+    currentPage = 1,
+    onPageChange
+}: PaginationProps) {
+    const lastPage = Math.ceil(totalCountOfRegisters / registerPerPage);
+
+
+    const previousPages = currentPage > 1 
+        ? generatePagesArray(currentPage -1 - sibilingsCount, currentPage -1)
+        : []
+
+    const nextPages = currentPage < lastPage
+    ? generatePagesArray(currentPage, Math.min(currentPage + sibilingsCount, lastPage))
+    : [] 
+
     return (
         <Stack
             direction={["column","row"]}
@@ -18,13 +52,39 @@ export function Pagination() {
                 spacing="2"
             >
 
-            <PaginationItem isCurrent pageNumber={1} />
-            <PaginationItem pageNumber={2} />
-            <PaginationItem pageNumber={3} />
-            <PaginationItem pageNumber={4} />
-            <PaginationItem pageNumber={5} />
-            <PaginationItem pageNumber={6} />
-            <PaginationItem pageNumber={7} />
+            { currentPage > ( 1 + sibilingsCount) && (
+                <>
+                    <PaginationItem pageNumber={1} />
+                    {currentPage > ( 2 + sibilingsCount) && (
+                        <Text
+                            color="gray.300" 
+                            w="8"
+                            textAlign="center"
+                        >...</Text>
+                    )}
+                </>
+            )}
+            {previousPages.length > 0 && previousPages.map(page => {
+                return <PaginationItem key={page} pageNumber={page} />
+            })}
+
+            <PaginationItem pageNumber={currentPage} isCurrent />
+            
+            {nextPages.length > 0 && previousPages.map(page => {
+                return <PaginationItem key={page} pageNumber={page} />
+            })}
+            { (currentPage + sibilingsCount) <  lastPage && (
+                <>
+                    <PaginationItem pageNumber={lastPage} />
+                    {(currentPage + 1 + sibilingsCount) < lastPage && (
+                        <Text
+                            color="gray.300" 
+                            w="8"
+                            textAlign="center"
+                        >...</Text>
+                    )}
+                </>
+            )}
             
             </Stack>
         </Stack>
