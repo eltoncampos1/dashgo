@@ -24,11 +24,11 @@ import { RiAddLine, RiPencilLine } from "react-icons/ri";
 import { Sidebar } from "../../components/Sidebar";
 import { Header } from "../../components/Header";
 import { Pagination } from "../../components/Pagination";
+import { api } from "../../services/api";
 
 export default function USerList(){
-    const {data, isLoading, error } = useQuery('users', async () => {
-        const response = await fetch('http://localhost:3000/api/users')
-         const data = await response.json();
+    const {data, isLoading, error, isFetching } = useQuery('users', async () => {
+        const { data } = await api.get('/users')
          
         const users =  data.users.map(user => {
             return {
@@ -73,7 +73,11 @@ export default function USerList(){
                     justify="space-between"
                     align="center"
                 >
-                    <Heading sile="lg" fontWeight="normal">Usuários</Heading>
+                    <Heading sile="lg" fontWeight="normal">
+                        Usuários 
+
+                        {!isLoading && isFetching && <Spinner size="sm" color="gray.500" ml="4" />}
+                    </Heading>
 
                     <Link href="/users/create" passHref>
                         <Button
